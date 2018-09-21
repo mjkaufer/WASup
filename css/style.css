@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css?family=Gravitas+One');
+@import url('https://fonts.googleapis.com/css?family=Arvo');
+
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#snap {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+#fake-dom {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -10;
+}
+
+#wasup {
+    margin-bottom: 0;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+h1, h2, h3 {
+    font-family: 'Gravitas One', cursive;
+}
+
+h4, h5, h6, p {
+    font-family: 'Arvo', serif;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+rect, rect.up {
+    transition: 0.25s all;
+}
+
+rect.up {
+    transform: translateY(-2vh);
+}
+
+.big {
+    font-size: 1.5em;
+}
