@@ -46,6 +46,7 @@ h1 {
 
 rect, rect.up {
     transition: 0.25s all;
+    cursor: pointer;
 }
 
 rect.up {

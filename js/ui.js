@@ -10,6 +10,8 @@ var height = document.body.clientHeight
 
 var mouseDown = false
 
+var piano = new Wad(Wad.presets.piano)
+
 function createKeys(n) {
     var rectWidth = width / n
     var rectHeight = height / 5    
@@ -23,9 +25,20 @@ function createKeys(n) {
 
         var rect = s.rect(x, y, rectWidth, rectHeight)
         rect.attr("fill", colors[i % 12])
+        rect.attr("pitch", Math.pow(2, i / 12) * 440)
         rect.playStates = 0
-        // rect.noStroke()
         rects.push(rect)
+
+        var play = function(i) {
+            console.log(i)
+            rects[i].node.onmousedown = function() {
+                playNote(i)
+                sendMessage(i)
+            }
+        }
+
+        play(i)
+        
     }
 
     return rects
@@ -70,6 +83,7 @@ document.body.onmousemove = function(e) {
         // really hard to get to that room, so we just artificially remove it
         var room = parseInt((Math.atan2(projection[1], projection[0]) / Math.PI + 1 - 0.5 / ROOMS) / 2 * ROOMS)
         roomDisplay.innerHTML = room
+        updateRoom(room)
     }
 }
 
@@ -82,17 +96,19 @@ function projectVector(vector, length) {
 
 var rects = createKeys(24)
 
-function playNote(n) {
-    var rect = rects[n]
+function playNote(i) {
+    var rect = rects[i]
     rect.playStates += 1
     rect.node.classList.add('up')
+
+    piano.play({pitch: rect.attr("pitch")})
 
     setTimeout(function() {
         rect.playStates -= 1
         if (rect.playStates == 0) {
             rect.node.classList.remove('up')
         }
-    }, NOTE_UPTIME)    
+    }, NOTE_UPTIME)   
     
-    // rects[0].animate({"transform": "scale(1, 1.5)"}, 100)
+
 }
