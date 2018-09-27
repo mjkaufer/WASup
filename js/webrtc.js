@@ -1,14 +1,13 @@
 var currentChannel = 0
-var channel = new DataChannel("WASup-0");
+var channel = new DataChannel("hi");
 
 channel.onopen = function(userid) {
     console.log(userid)
 };
 
 channel.onmessage = function(message, userid) {
-    console.log(userid, message)
     if (message.subChannel == currentChannel) {
-        playNote(rects[message.payload])
+        playNote(message.payload)
     }
 };
 

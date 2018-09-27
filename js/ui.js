@@ -30,7 +30,6 @@ function createKeys(n) {
         rects.push(rect)
 
         var play = function(i) {
-            console.log(i)
             rects[i].node.onmousedown = function() {
                 playNote(i)
                 sendMessage(i)
@@ -109,6 +108,13 @@ function playNote(i) {
             rect.node.classList.remove('up')
         }
     }, NOTE_UPTIME)   
-    
-
 }
+
+// window.onresize = function() {
+//     knobs.forEach(function(knob) {
+//         knob.remove()
+//     })
+//     rects.forEach(function(rect) {
+//         rect.remove()
+//     })
+// }
