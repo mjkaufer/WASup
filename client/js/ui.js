@@ -60,6 +60,7 @@ function createKnobs(r) {
 }
 
 var knobs = createKnobs(Math.min(width, height) / 15)
+var rects = createKeys(24)
 
 knobs[1].node.onmousedown = function() {
     mouseDown = true
@@ -93,8 +94,6 @@ function projectVector(vector, length) {
     })
 }
 
-var rects = createKeys(24)
-
 function playNote(i) {
     var rect = rects[i]
     rect.playStates += 1
@@ -110,11 +109,81 @@ function playNote(i) {
     }, NOTE_UPTIME)   
 }
 
-// window.onresize = function() {
-//     knobs.forEach(function(knob) {
-//         knob.remove()
-//     })
-//     rects.forEach(function(rect) {
-//         rect.remove()
-//     })
-// }
+
+const pathAnimationInterval = 20
+const circleRadius = 20
+const numPaths = 5
+
+// some docs on how to make paths: http://snapsvg.io/docs/#Paper.path
+var pathStrings = ["M0,0h10v10h10", "M0,0l10,0l0,20Z", "M0,0a7,7,0,1,1,0,.00001"]
+var pathGroups = makePaths(numPaths)
+
+
+function makePaths(numPaths) {
+    var paths = []
+    for (var i = 0; i < numPaths; i++) {
+        var pathString = pathStrings[parseInt(Math.random() * pathStrings.length)]
+        var stroke = colors[parseInt(Math.random() * colors.length)]
+        var g = s.group()
+        var path = g.path(pathString)
+        path.attr({
+            stroke,
+            "fill-opacity": 0,
+            "stroke-width": 3
+        })
+
+        var x = Math.random() * (width - g.getBBox().width - 2 * circleRadius)
+        var y = Math.random() * (height - g.getBBox().height - 2 * circleRadius)
+
+        g.initial = Math.random() * 2 * Math.PI
+        g.period = Math.random() + 0.5
+        g.rotation = parseInt(Math.random() * 360)
+        g.x = x
+        g.y = y
+
+        g.addClass('pathGroup')
+
+        updateGroupPosition(g)
+
+        paths.push(g)
+    }
+
+    return paths
+}
+
+function updateGroupPosition(group) {
+    var w = (t + group.initial) * group.period
+    var x = group.x + circleRadius * Math.cos(w)
+    var y = group.y + circleRadius * Math.sin(w)
+    group.transform("t" + x + "," + y + "r" + group.rotation)
+}
+
+var t = 0
+var dt = 0.05
+setInterval(function() {
+    pathGroups.forEach(function(group) {
+        updateGroupPosition(group)
+    })
+    t += dt
+}, pathAnimationInterval)
+
+window.onresize = function() {
+    knobs.forEach(function(knob) {
+        knob.remove()
+    })
+    rects.forEach(function(rect) {
+        rect.remove()
+    })
+
+    pathGroups.forEach(function(pathGroup) {
+        pathGroup.remove()
+    })
+
+    width = document.body.clientWidth
+    height = document.body.clientHeight
+
+    rects = createKeys(24)
+    knobs = createKnobs(Math.min(width, height) / 15)
+
+    pathGroups = makePaths(numPaths)
+}

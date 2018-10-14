@@ -1,0 +1,26 @@
+{
+  "name": "wasup",
+  "version": "1.0.0",
+  "description": "Websockets / Audio / SVG",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mjkaufer/WASup.git"
+  },
+  "author": "mjkaufer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mjkaufer/WASup/issues"
+  },
+  "homepage": "https://github.com/mjkaufer/WASup#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "js-combinatorics": "^0.5.3",
+    "weighted-random": "^0.1.0",
+    "ws": "^6.1.0"
+  }
+}

@@ -1,6 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Gravitas+One');
 @import url('https://fonts.googleapis.com/css?family=Arvo');
 
+@keyframes rotate {
+    from {
+        transform: rotate(-15deg);
+    } to {
+        transform: rotate(15deg);
+    }
+}
+
+.pathGroup {
+    cursor: pointer;
+}
+
+.pathGroup path {
+    animation: rotate 1s infinite alternate-reverse ease-in-out;
+}
 
 body {
     margin: 0;
