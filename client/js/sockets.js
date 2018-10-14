@@ -1,5 +1,4 @@
-const socketPort = 3000
-const wsURL = "ws://" + window.location.hostname + window.location.pathname.slice(0, -1) + ":" + socketPort
+const wsURL = "ws://" + window.location.hostname + window.location.pathname + ":" + window.location.port
 const socket = new WebSocket(wsURL)
 var currentChannel = 0
 
