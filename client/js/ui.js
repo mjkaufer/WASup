@@ -122,7 +122,7 @@ var pathGroups = makePaths(numPaths)
 function makePaths(numPaths) {
     var paths = []
     for (var i = 0; i < numPaths; i++) {
-        var pathString = pathStrings[parseInt(Math.random() * pathStrings.length)]
+        var pathString = pathStrings[i % pathStrings.length]
         var stroke = colors[parseInt(Math.random() * colors.length)]
         var g = s.group()
         var path = g.path(pathString)
@@ -142,6 +142,10 @@ function makePaths(numPaths) {
         g.y = y
 
         g.addClass('pathGroup')
+
+        g.node.onclick = function() {
+            sendMessage(-1)
+        }
 
         updateGroupPosition(g)
 

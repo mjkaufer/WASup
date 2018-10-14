@@ -3,22 +3,24 @@ const path = require('path')
 const WebSocket = require('ws')
 const MattkovChains = require('./mattkovchains')
 const webPort = 3000
-const socketPort = 3001
 const numChannels = 10
 
-const welcomeMessage = JSON.stringify({payload: "Welcome!"})
+// start web server to host our page
+const app = express()
+app.use('/', express.static(path.join(__dirname, 'client')))
+
+const httpServer = require('http').createServer(app)
+httpServer.listen(webPort, () => console.log(`WASup listening on port ${webPort}!`))
 
 // start websocket server
-const server = new WebSocket.Server({ port: 3001 })
+const socketServer = new WebSocket.Server({ server: httpServer })
 
 const channelChains = Array.apply(null, Array(numChannels)).map(function() {
     return MattkovChains()
 })
 
 // when a client connects
-server.on('connection', function(connection) {
-    // welcome them
-    connection.send(welcomeMessage)
+socketServer.on('connection', function(connection) {
 
     connection.on('message', function(message) {
 
@@ -44,7 +46,7 @@ server.on('connection', function(connection) {
 
         const stringifiedMessage = JSON.stringify(message)
 
-        server.clients.forEach(function(client) {
+        socketServer.clients.forEach(function(client) {
             // if the client is active and not our client, forward them the note we played
             if (client !== connection && client.readyState === WebSocket.OPEN) {
                 client.send(stringifiedMessage)
@@ -52,8 +54,3 @@ server.on('connection', function(connection) {
         })
     })
 })
-
-// start web server to host our page
-const app = express()
-app.use('/', express.static(path.join(__dirname, 'client')))
-app.listen(webPort, () => console.log(`WASup listening on port ${webPort}!`))

@@ -1,4 +1,6 @@
-const socket = new WebSocket("ws://localhost:3001")
+const socketPort = 3000
+const wsURL = "ws://" + window.location.hostname + window.location.pathname.slice(0, -1) + ":" + socketPort
+const socket = new WebSocket(wsURL)
 var currentChannel = 0
 
 socket.onmessage = function(message) {
@@ -20,6 +22,6 @@ function sendMessage(data) {
         payload: data,
         subChannel: currentChannel
     }
-    
+
     socket.send(JSON.stringify(noteData))
 }
